@@ -1,0 +1,65 @@
+[project]
+name = "metalc"
+version = "0.1.0"
+description = "Ensemble topic modelling (LDA and NMF-GKL) for microbiome ASV tables: pooled topics clustered into meta-LCs in a shared Hellinger geometry, then fixed-W inference."
+readme = "README.md"
+requires-python = ">=3.11,<3.14"
+dependencies = [
+    "anywidget>=0.11.0",
+    "datamapplot>=0.5",
+    "fast-hdbscan>=0.3.2",
+    "gensim>=4.4.0",
+    "joblib>=1.3",
+    "kaleido>=1.3.0",
+    "kmedoids>=0.5.5",
+    "lda4microbiome>=1.0.1",
+    "matplotlib>=3.10.9",
+    "numpy>=1.24",
+    "pandas>=2.0.3,<3.0.0",
+    "plotly>=5.0",
+    "scikit-learn>=1.8.0",
+    "scipy>=1.11",
+    "ssnmf==0.0.2",
+    "traitlets>=5.0",
+    "umap-learn>=0.5.12",
+    "zadu>=0.4.2",
+]
+
+# Used only by notebooks/ and experiments/, which are not part of the package —
+# nothing in src/ imports them. Kept out of `dependencies` so installing the
+# library does not drag in torch et al., but listed here so `uv sync` still sets
+# up the full local working environment (see `default-groups` below).
+[dependency-groups]
+notebooks = [
+    "little-mallet-wrapper>=0.5.0",
+    "marimo>=0.23.7",
+    "nltk>=3.9.4",
+    "openpyxl>=3.1.5",
+    "seaborn>=0.13.2",
+    "torch>=2.12.0",
+    "wordcloud>=1.9.6",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+# The modules in src/ are flat top-level names (`import topic_clustering`,
+# `import nmf_utils`, ...), not a package directory. `sources = ["src"]` strips
+# the src/ prefix so they land at top level in the wheel, exactly as they resolve
+# today when src/ is put on sys.path — which is how CPR/POLARIS consumes them.
+[tool.hatch.build.targets.wheel]
+only-include = ["src"]
+sources = ["src"]
+
+# `uv sync` installs the notebook group too, so the local working environment is
+# unchanged; the published wheel carries only `dependencies`.
+[tool.uv]
+default-groups = ["notebooks"]
+
+# lda4microbiome is on PyPI (1.0.1), so `dependencies` above resolves for anyone
+# installing this package. The override points development at the local checkout
+# instead, because that package changes under us — see CLAUDE.md. Delete these
+# two lines to build against the released version.
+[tool.uv.sources]
+lda4microbiome = { path = "../gitlab/LDA4Microbiome_Workflow", editable = true }

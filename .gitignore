@@ -1,0 +1,48 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# macOS
+.DS_Store
+
+# Claude Code / agent tooling
+.claude/
+CLAUDE.md
+CLAUDE.local.md
+.claude.json
+.mcp.json
+
+# Research material — not part of the published library
+notebooks/
+experiments/
+manuscript/
+docs/
+design/
+data/
+references/
+plots/
+hpc/
+
+# RadialKMap (D3 + anywidget) — abandoned design, kept locally only
+src/radial_kmap_widget.py
+src/radial_kmap.js
+src/radial_kmap.css
+
+# Design note — not a package module
+src/API.md
+
+# Dead code — superseded clustering/profiling paths + extract_tables.py's
+# one-off HRD Excel-splitting script, kept locally for reference
+src/archive.py
+
+# Scratch dumps
+doc_ind_list_flat.txt
+word_ind_list_flat.txt
+word_list_flat.txt
